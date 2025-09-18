@@ -21,7 +21,7 @@ namespace Lab1.DiningPhilosophers
 			return false;
 		}
 
-        public string ?GetOwnerName() => HeldBy.Name != null ? HeldBy.Name : null;
+        public string ?GetOwnerName() => HeldBy != null ? HeldBy.Name : null;
 
         public void Release()
 		{

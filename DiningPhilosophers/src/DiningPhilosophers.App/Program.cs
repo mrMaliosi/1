@@ -7,12 +7,12 @@ namespace Lab1.DiningPhilosophers
 	{
         public static void Main()
         {
-            var configPath = @"C:\Users\Владимир\Desktop\Универ\4 курс\CS\1\DiningPhilosophers\conf\config.json";
+            var configPath = @"conf/config.json";
             SimulationContext simContext = SimulationContext.makeFromJson(configPath);
 
             IPhilosopherStrategy strategy = simContext.StrategyName switch
             {
-                "coord" => new CoordinatedStrategy(new SimpleCoordinator()),
+                "cord" => new CoordinatedStrategy(new SimpleCoordinator()),
                 _ => new NaiveStrategy()
             };
 

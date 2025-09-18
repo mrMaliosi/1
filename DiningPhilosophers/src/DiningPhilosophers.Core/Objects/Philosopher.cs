@@ -71,28 +71,36 @@ namespace Lab1.DiningPhilosophers
                 fork.Release();
             }
             _forks_remain = GetForksNum();
-            LastAction = ActionType.ReleaseFork;
         }
 
         private void ChangeState() {
-            switch (State)
-            {
-                case PhilosopherState.Thinking:
-                    State = PhilosopherState.Hungry;
-                    break;
-                case PhilosopherState.Hungry:
-                    if (_forks_remain == 0) 
-                    {
-                        State = PhilosopherState.Eating;
-                        StepsRemainingInState = Context.GetEatingDuration();
-                    }
-                    break;
-                case PhilosopherState.Eating:
-                    State = PhilosopherState.Thinking;
-                    RealizeFutilityOfBeing();
-                    StepsRemainingInState = Context.GetThinkingDuration();
-                    ++MealsEaten;
-                    break;
+            if (StepsRemainingInState == 0) {
+                switch (State)
+                {
+                    case PhilosopherState.Thinking:
+                        State = PhilosopherState.Hungry;
+                        break;
+                    case PhilosopherState.Hungry:
+                        LastAction = ActionType.None;
+                        if (_forks_remain == 0) 
+                        {
+                            State = PhilosopherState.Eating;
+                            StepsRemainingInState = Context.GetEatingDuration();
+                        }
+                        break;
+                    case PhilosopherState.Eating:
+                        RealizeFutilityOfBeing();
+                        StepsRemainingInState = Context.GetThinkingDuration();
+                        State = PhilosopherState.Thinking;
+                        LastAction = ActionType.ReleaseFork;
+                        ++MealsEaten;
+                        break;
+                }
+            } else {
+                if (State == PhilosopherState.Thinking) 
+                {
+                    LastAction = ActionType.None;
+                }
             }
         }
 
@@ -100,7 +108,7 @@ namespace Lab1.DiningPhilosophers
         public void RealiseThePassageOfTime() 
         {
             --StepsRemainingInState;
-            if (StepsRemainingInState == 0) ChangeState();
+            ChangeState();
         }
 
         public bool IsBusy() 

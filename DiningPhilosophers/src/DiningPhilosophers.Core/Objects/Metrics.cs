@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Lab1.DiningPhilosophers
@@ -24,7 +25,8 @@ namespace Lab1.DiningPhilosophers
 				if (!ForkUsingSteps.ContainsKey(fork.Id)) ForkUsingSteps[fork.Id] = 0;
                 if (fork.State == ForkState.InUse)
                 {
-					if (fork.HeldBy.State == PhilosopherState.Eating)
+                    Debug.Assert(fork.HeldBy != null);
+                    if (fork.HeldBy.State == PhilosopherState.Eating)
 					{
                         ForkUsingSteps[fork.Id]++;
                     } 
